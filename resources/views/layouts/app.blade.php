@@ -6,75 +6,128 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/x-icon"  href="{{ asset('favicon.ico') }}" sizes="48x48" />
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Twapis') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=roboto:400,500,700,900" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+{{--    @vite(['resources/sass/app.scss'])--}}
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="min-h-full">
+    <div id="app" v-cloak class="min-h-screen flex flex-col">
+        <nav class="shadow sticky top-0 w-full bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between h-16 items-center">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+                    <!-- Logo -->
+                    <a href="{{ url('/') }}" class="text-2xl font-semibold">
 
-                    </ul>
+                        <img src="https://truewebcart.s3-accelerate.amazonaws.com/logo_truewebcart400.png"
+                             alt="{{ config('app.name', 'Laravel') }}" width="200" height="37">
+                    </a>
+                    <div class="hiden md:flex items-center space-x-8">
+                        <a href="/" class="text-slate-600">Home</a>
+                        <a href="/" class="text-slate-600">Solutions</a>
+                        <a href="/" class="text-slate-600">About</a>
+                        <a href="/" class="text-slate-600">Plans</a>
+                        <a href="/" class="text-slate-600">Contact</a>
+                    </div>
+                    <!-- Mobile Toggle -->
+                    <button id="menuBtn" class="md:hidden p-2 border border-gray-200 rounded-xl cursor-pointer">
+                        <span class="iconify text-2xl" data-icon="mdi-menu"></span>
+                    </button>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
+
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-6">
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
+                                <a href="{{ route('login') }}" class="hover:text-blue-600">Login</a>
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
+                                <a href="{{ route('register') }}" class="hover:text-blue-600">Register</a>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <!-- Dropdown -->
+                            <div class="relative">
+                                <button id="userBtn" class="hover:text-blue-600 flex items-end gap-1">
                                     {{ Auth::user()->name }}
-                                </a>
+                                    <span class="iconify text-xl" data-icon="mdi-chevron-down"/>
+                                </button>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                <div id="userMenu" class="hidden absolute right-0 mt-2 w-40 bg-white border rounded-lg border-gray-200 shadow">
+                                    <a href="{{ route('logout') }}"
+                                       class="block px-4 py-2 hover:bg-gray-100"
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Logout
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
                                 </div>
-                            </li>
+                            </div>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                @csrf
+                            </form>
                         @endguest
-                    </ul>
+
+                    </div>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div id="mobileMenu" class="hidden md:hidden pb-4 space-y-2">
+                    @guest
+                        <a href="{{ route('login') }}" class="block">Login</a>
+                        <a href="{{ route('register') }}" class="block">Register</a>
+                    @else
+                        <a href="#"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                           class="block">
+                            Logout
+                        </a>
+                    @endguest
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
+        <main class="bg-slate-50 flex-1">
             @yield('content')
         </main>
     </div>
+    @vite(['resources/js/app.js'])
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const userBtn = document.getElementById('userBtn');
+        const userMenu = document.getElementById('userMenu');
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        if (userBtn && userMenu) {
+            userBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                userMenu.classList.toggle('hidden');
+            });
+        }
+
+        document.addEventListener('click', function (e) {
+            if (userMenu && userBtn &&
+                !userBtn.contains(e.target) &&
+                !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+
+    });
+</script>
 </html>

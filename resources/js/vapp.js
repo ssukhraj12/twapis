@@ -1,5 +1,6 @@
 import './bootstrap.js';
-import 'vuetify/dist/vuetify.min.css';
+// import 'vuetify/dist/vuetify.min.css';
+import 'vuetify/styles';
 import {createApp, defineAsyncComponent} from "vue";
 import App from './App.vue';
 import router from './router/index.js';
