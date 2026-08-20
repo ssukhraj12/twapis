@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@source "../views/**/*.blade.php";
+@source "../js/**/*.js";
+
+:root{
+    --font-sans: "Roboto",sans-serif;
+}
+
+@theme inline {
+    --font-sans:var(--font-sans);
+    --color-primary:rgba(var(--v-theme-primary));
+    --color-dblu:rgb(3, 43, 95);
+    --color-lblu:rgb(62, 169, 245);
+}

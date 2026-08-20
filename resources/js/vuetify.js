@@ -1,0 +1,65 @@
+
+import { createVuetify } from "vuetify";
+import * as components from 'vuetify/components';
+import * as directives from "vuetify/directives";
+import * as colors from "vuetify/util/colors";
+
+export default createVuetify({
+    components,
+    directives,
+    theme:{
+        defaultTheme:'light',
+        themes:{
+            light:{
+                colors:{
+                    primary:colors.blue.darken3,
+                    secondary:colors.blue.darken4,
+                    success:colors.green.darken3,
+                    navy:'#1B2A41',
+                    teal:'#00bfa6',
+                    mint:'#f1fffc',
+                    lblue:'#dde7f2'
+                }
+            }
+        },
+    },
+    defaults:{
+        VBtn: {
+            density: 'comfortable',
+            variant:'tonal',
+            color:'primary',
+            class:'text-none'
+        },
+        VTextField: {
+            density: 'compact',
+        },
+
+        VSelect: {
+            density: 'compact',
+        },
+
+        VAutocomplete: {
+            density: 'compact',
+        },
+
+        VTextarea: {
+            density: 'compact',
+        },
+
+        VCombobox: {
+            density: 'compact',
+        },
+
+        VList: {
+            density: 'compact',
+        },
+
+        VListItem: {
+            density: 'compact',
+        },
+
+        VChip: {
+            density: 'comfortable',
+        },
+    }
+})
