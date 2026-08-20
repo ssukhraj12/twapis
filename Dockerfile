@@ -37,6 +37,8 @@ COPY . .
 
 RUN php artisan package:discover --ansi
 
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
+
 EXPOSE 8080
 
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+#CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
